@@ -42,7 +42,8 @@ connect = (host, port)=>{
         console.log('发送成功', message.content)
         return
       case Message.Type.PushMsg:
-        console.log('接收成功', message.content)
+        client.receive(message)
+        // console.log('接收成功', message.content)
         return
     }
   })

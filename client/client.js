@@ -36,6 +36,21 @@ class Client {
         
         this.connect.write(Message.newMsg(this.seq, c))
     }
+
+    receive(message) {
+        let content = JSON.parse(message.content)
+        console.log(`receive ${content.from}:  ${content.content}   At: ${content.datetime}`)
+    }
+
+    getLastMsgId(from) {
+
+    }
+
+    setLastMsgId(from) {
+        
+    }
 }
+
+Client.MsgIdFile = 'msgId.txt'
 
 module.exports = Client
