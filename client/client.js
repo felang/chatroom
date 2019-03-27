@@ -1,4 +1,6 @@
-var Message = require("../connector-node/message")
+const Message = require("../connector-node/message")
+const fs = require('fs')
+
 class Client {
     constructor(connect){
         this.status = 0
@@ -37,17 +39,40 @@ class Client {
         this.connect.write(Message.newMsg(this.seq, c))
     }
 
+    pollMsg() {
+        let content = {
+            from: this.target,
+            to: this.nickname,
+            lastMessageId: this.getLastMsgId(this.target)
+        }
+        this.connect.write(Message.pollMsg(this.seq, content))
+    }
+
     receive(message) {
         let content = JSON.parse(message.content)
+        this.setLastMsgId(content.from, content.id)
         console.log(`receive ${content.from}:  ${content.content}   At: ${content.datetime}`)
     }
 
-    getLastMsgId(from) {
-
+    receivePoll(message) {
+        let msgList = JSON.parse(message.content)
+        this.setLastMsgId(this.target, content.id)
+        console.log
     }
 
-    setLastMsgId(from) {
-        
+    getLastMsgId(from) {
+        let content = JSON.parse(fs.readFileSync(Client.MsgIdFile, 'utf8'))
+        let result = content[this.nickname][from]
+        return result
+    }
+
+    setLastMsgId(from, msgId) {
+        let content = JSON.parse(fs.readFileSync(Client.MsgIdFile, 'utf8'))
+        if(!content[this.nickname]) {
+            content[this.nickname] = {}
+        }
+        content[this.nickname][from] = msgId
+        fs.writeFileSync(Client.MsgIdFile, JSON.stringify(content))
     }
 }
 

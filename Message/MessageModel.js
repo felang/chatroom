@@ -28,6 +28,20 @@ class Message {
         return null
     }
 
+    static pollMsg(condition) {
+        let msgList = []
+        for (let i = 0; i < Message.list.length; i++) {
+            if(
+                condition.from === Message.list[i].from &&
+                condition.to === Message.list[i].to &&
+                condition.lastMessageId < Message.list[i].id
+            ) {
+                msgList.push(Message.list[i])
+            }
+        }
+        return msgList
+    }
+
     // static findList()
 }
 

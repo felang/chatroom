@@ -45,6 +45,10 @@ connect = (host, port)=>{
         client.receive(message)
         // console.log('接收成功', message.content)
         return
+      case Message.Type.PushMsg:
+        client.receivePoll(message)
+        // console.log('接收成功', message.content)
+        return
     }
   })
 

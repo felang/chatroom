@@ -17,13 +17,9 @@ rl.on('close', function() {
     process.exit(0)
 })
 
-// let client = cp.fork('./client.js')
-// client.send('hello world!!!')
+
 process.on('exit', (code) => {
     console.log(`退出码: ${code}`)
     app.send('kill')
 })
 
-// process.on('message', (msg) => {
-//     console.log('message   ', msg.toString())
-// })

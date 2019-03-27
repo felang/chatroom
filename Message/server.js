@@ -7,5 +7,9 @@ module.exports = {
         let pushMsg = PushService.push(msg)
         console.log('PushMsg', pushMsg)
         return msg
+    },
+
+    pollMsg: (condition) => {
+        return Message.pollMsg(condition)
     }
 }
