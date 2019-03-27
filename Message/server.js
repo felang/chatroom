@@ -1,6 +1,6 @@
 const Message = require('./MessageModel')
 const PushService = require('../service/PushService')
-console.log('service', require('../service'))
+
 module.exports = {
     send: (message) => {
         let msg = Message.create(message)

@@ -7,5 +7,9 @@ module.exports = {
 
     find: (nickname) => {
         return StatusServer.find(nickname)
+    },
+
+    delete: (clientId) => {
+        return StatusServer.delete(clientId)
     }
 }

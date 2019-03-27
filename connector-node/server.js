@@ -12,11 +12,13 @@ server = net.createServer((c)=>{
   c.on("end", ()=>{
     // if (connections[c.id]) delete connections[c.id]
     client.status = 0
+    client.logout()
     console.log("connection end " + client.id)
   })
 
   c.on("error", (err)=>{
     client.status = 0
+    client.logout()
     console.log(err, c.id)
 
   })

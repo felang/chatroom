@@ -15,5 +15,9 @@ module.exports = {
 
     find: (nickname) => {
         return Status.find(nickname)
+    },
+
+    delete: (clientId) => {
+        return Status.delete(clientId)
     }
 }

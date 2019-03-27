@@ -16,6 +16,16 @@ class Status {
         return Status.object[nickname]
     }
 
+    static delete(clientId) {
+        let list = Object.keys(Status.object)
+        list.forEach((status) => {
+            if(Status.object[status].clientId === clientId) {
+                delete Status.object[status]
+                break
+            }
+        })
+    }
+
     // static update(nickname)
 }
 

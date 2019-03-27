@@ -1,5 +1,6 @@
 const config = require('./config')
 const Message = require('./message')
+const StatusService = require('../service/StatusService')
 class Client {
     constructor(id, socket) {
         this.id = id
@@ -17,6 +18,7 @@ class Client {
 
     static destroy(id) {
         let client = this.get(id)
+        StatusService.delete(id)
         client.socket.destroy()
         client.status = 0
     }
@@ -55,7 +57,9 @@ class Client {
         this.socket.write(chunk)
     }
 
-    
+    logout() {
+        StatusService.delete(this.id)
+    }
 }
 
 Client.count = 0
