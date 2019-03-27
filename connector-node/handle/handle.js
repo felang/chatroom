@@ -17,9 +17,10 @@ const handleLogin = function(client, message) {
     let user = UserService.login(userInfo)
     let userStatus = StatusService.check(user.nickname, client.id, config.connecter)
     if(userStatus.kickUser) {
-        let kickMsg = JSON.stringify({nickname: user.nickname, content: "有其他用户使用你的身份登录！！"})
+        let kickMsg = {nickname: user.nickname, content: "有其他用户使用你的身份登录！！"}
         Client.kick(userStatus.kickUser.clientId, kickMsg)
     }
+    console.log('userstatus', userStatus)
     let msg = new Message()
     msg.seq = message.seq
     msg.cmd = Message.Type.Login
@@ -29,8 +30,11 @@ const handleLogin = function(client, message) {
 
 const handleNewMsg = function(client, message) {
     let output = MessageService.send(JSON.parse(message.content))
-    console.log('message output')
-    Client.push(client.id, JSON.stringify(output))
+    let msg = new Message()
+    msg.seq = message.seq
+    msg.cmd = Message.Type.NewMsg
+    msg.content = JSON.stringify(output)
+    client.send(msg)
 }
 
 const handlePollMsg = function(message) {

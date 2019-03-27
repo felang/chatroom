@@ -9,7 +9,7 @@ class Status {
             clientId,
         }
         console.log('StatusObj', Status.object)
-        return Status[nickname]
+        return Status.object[nickname]
     }
 
     static find(nickname) {
@@ -21,7 +21,6 @@ class Status {
         list.forEach((status) => {
             if(Status.object[status].clientId === clientId) {
                 delete Status.object[status]
-                break
             }
         })
     }

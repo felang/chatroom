@@ -76,4 +76,28 @@ Message.Type = {
 
 Message.ServerSeq = 0
 
+Message.hb = (seq) => {
+	let msg = new Message()
+	msg.seq = seq
+	msg.cmd = Message.Type.HB
+	msg.content = '开始心跳'
+	return msg.toChunk()
+}
+
+Message.login = (seq, nickname) => {
+	let msg = new Message()
+	msg.seq = seq
+	msg.cmd = Message.Type.Login
+	msg.content = JSON.stringify({nickname})
+	return msg.toChunk()
+}
+
+Message.newMsg = (seq, content) => {
+	let msg = new Message()
+	msg.seq = seq
+	msg.cmd = Message.Type.NewMsg
+	msg.content = JSON.stringify(content)
+	return msg.toChunk()
+}
+
 module.exports = Message
