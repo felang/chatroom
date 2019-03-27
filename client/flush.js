@@ -1,6 +1,6 @@
 function flush() {
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
+    process.stdout.clearLine()
+    process.stdout.cursorTo(0)
 }
 let content = [{nickname: 'test1', content: 'hello!'}, {nickname: 'test2', content: 'how are you there?'}]
 const printContent = (content) => {
@@ -9,18 +9,18 @@ const printContent = (content) => {
     })
 }
 
-var total = 5000;
-var current = 0;
-var percent = 0;
-var waitingTime = 500;
+var total = 5000
+var current = 0
+var percent = 0
+var waitingTime = 500
 setInterval(function() {
-    current += waitingTime;
-    percent = Math.floor((current / total) * 100);
-    flush();
-    // process.stdout.write(`downloading ... ${percent}%`);
+    current += waitingTime
+    percent = Math.floor((current / total) * 100)
+    flush()
+    // process.stdout.write(`downloading ... ${percent}%`)
     printContent(content)
     if (current >= total) {
-        console.log("\nDone.");
-        clearInterval(this);
+        console.log("\nDone.")
+        clearInterval(this)
     }
-}, waitingTime);
+}, waitingTime)

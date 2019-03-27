@@ -1,27 +1,32 @@
 const readline = require('readline')
+const operate = require('./operate')
 const rl = readline.createInterface(process.stdin, process.stdout)
 const cp = require('child_process')
-function flush() {
-    process.stdout.clearLine()
-    process.stdout.cursorTo(0)
-}
+
 rl.setPrompt('Test> ')
 rl.prompt()
 
 rl.on('line', function(line) {
-    switch(line.trim()) {
-        case 'copy':
-            console.log("复制")
+    let command = line.trim().split(' ')[0]
+    let param = line.trim().split(' ').slice[1]
+    switch(command) {
+        case 'login':
+            operate.login(...param)
+            console.log('登录成功')
             break
-        case 'hello':
-            console.log('world!')
+        case 'sendto':
+            console.log('切换聊天对象', ...param)
+            operate.sendto(...param)
             flush()
             break
-        case 'close':
-            rl.close()
+        case 'msg':
+            operate.msg(...param)
+            break
+        case 'ulist':
+            operate.msg(...param)
             break
         default:
-            console.log('You: ', line)
+            console.log('无此指令')
             break
     }
     rl.prompt()

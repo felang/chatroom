@@ -1,64 +1,41 @@
-var net = require("net")
-var host = process.env.host || "127.0.0.1"
-var port = process.env.port || 8125
 var Message = require("../connector-node/message")
+class Client {
+    constructor(connect){
+        this.status = 0
+        this.connect = connect
+        this.nickname = ''
+        this.target = ''
+        this.seq = 0
+    }
 
-connect = (host, port)=>{
-  var client
-  var seq = 0
-  client = net.connect({
-    port: port,
-    host: host
-  }, ()=>{
-    var message = new Message()
-    message.seq = seq++
-    message.cmd = Message.Type.HB
-    message.content = "心跳起来"
+    sendto(to) {
+        this.target = to
+    }
 
-    // console.log(message.toChunk())
-    client.write(message.toChunk())
-    console.log(message)
+    hb() {
+        this.seq += 1
+        this.connect.write(Message.hb(this.seq))
+    }
 
-    var message = new Message()
-    message.seq = seq++
-    message.cmd = Message.Type.Login
-    message.content = JSON.stringify({nickname:'felang1'})
+    login(nickname) {
+        this.seq += 1
+        this.status = 1
+        this.nickname = nickname
+        this.connect.write(Message.login(this.seq, nickname))
+    }
 
-    // console.log(message.toChunk())
-    client.write(message.toChunk())
-    console.log(message)
-    })
-    
-
-  // })
-
-  client.on("data", (chunk)=>{
-    // var diff, result, start
-
-    // start = parseInt(chunk.toString("utf8", 3, 16))
-    // diff = Date.now() - start
-    // result = chunk.toString("utf8")
-
-    // console.log("rece diff:" + diff + " " + result)
-
-    var message = Message.ReadMessage(chunk)
-    console.log('回执', message)
-  })
-
-  client.on("end", ()=>{
-    console.log("end")
-  })
-
-  client.on("error", (error)=>{
-    console.log("error", error)
-  })
+    msg(content) {
+        let c = {
+            from: this.nickname,
+            to: this.target,
+            type: 2,
+            content: content,
+            datetime: Date.now()
+        }
+        this.seq += 
+        
+        this.connect.write(Message.newMsg(this.seq, c))
+    }
 }
 
-connect(host, port)
-
-// process.on('message', (msg) => {
-//   console.log(msg.toString())
-//   if(msg.toString() === 'kill') {
-//     process.exit(1)
-//   }
-// })
+module.exports = Client

@@ -11,11 +11,13 @@ connect = (host, port)=>{
   }, ()=>{
     let client = new Client(c)
     client.hb()
-    client.login('felang2')
-    // setTimeout(() => {
-    //   client.sendto('felang2')
-    //   client.msg('我的天呐')
-    // }, 3000)
+    client.login('felang1')
+    setTimeout(() => {
+      client.sendto('felang2')
+      client.msg('我的天呐')
+      client.msg('在? ')
+
+    }, 3000)
     
     })
     
@@ -37,9 +39,6 @@ connect = (host, port)=>{
         return
       case Message.Type.NewMsg:
         console.log('发送成功', message.content)
-        return
-      case Message.Type.PushMsg:
-        console.log('接收成功', message.content)
         return
     }
   })
