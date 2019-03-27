@@ -32,7 +32,7 @@ class Client {
             content: content,
             datetime: Date.now()
         }
-        this.seq += 
+        this.seq += 1
         
         this.connect.write(Message.newMsg(this.seq, c))
     }

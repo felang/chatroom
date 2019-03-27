@@ -3,23 +3,24 @@ var host = process.env.host || "127.0.0.1"
 var port = process.env.port || 8125
 var Message = require("../connector-node/message")
 const Client = require('./client')
+let client
 connect = (host, port)=>{
   var c
   c = net.connect({
     port: port,
     host: host
   }, ()=>{
-    let client = new Client(c)
+    client = new Client(c)
     client.hb()
-    client.login('felang1')
-    setTimeout(() => {
-      client.sendto('felang2')
-      client.msg('我的天呐')
-      client.msg('在? ')
+    // client.login('felang1')
+    // setTimeout(() => {
+    //   client.sendto('felang2')
+    //   client.msg('我的天呐')
+    //   client.msg('在? ')
 
-    }, 3000)
+    // }, 3000)
     
-    })
+  })
     
 
   // })
@@ -40,6 +41,9 @@ connect = (host, port)=>{
       case Message.Type.NewMsg:
         console.log('发送成功', message.content)
         return
+      case Message.Type.PushMsg:
+        console.log('接收成功', message.content)
+        return
     }
   })
 
@@ -54,9 +58,25 @@ connect = (host, port)=>{
 
 connect(host, port)
 
-// process.on('message', (msg) => {
-//   console.log(msg.toString())
-//   if(msg.toString() === 'kill') {
-//     process.exit(1)
-//   }
-// })
+process.on('message', (msg) => {
+  let data = msg.toString()
+  let command = data.split(' ')[0]
+  let param = data.split(' ').slice(1)
+  console.log(data)
+  switch(command) {
+    case 'kill':
+      process.exit(1)
+      return
+    case 'login':
+      client.login(...param)
+      return
+    case 'sendto':
+      client.sendto(...param)
+      return
+      // console.log('sendto', ...param)
+    case 'msg':
+      client.msg(...param)
+      return
+      // console.log('sendto', ...param)
+  }
+})
