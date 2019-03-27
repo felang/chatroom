@@ -37,8 +37,13 @@ const handleNewMsg = function(client, message) {
     client.send(msg)
 }
 
-const handlePollMsg = function(message) {
-
+const handlePollMsg = function(client, message) {
+    let msgList = MessageService.pollMsg(JSON.parse(message.content))
+    let msg = new Message()
+    msg.seq = message.seq
+    msg.cmd = Message.Type.PollMsg
+    msg.content = JSON.stringify(msgList)
+    client.send(msg)
 }
 
 const handlePushMsg = function(message) {

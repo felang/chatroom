@@ -100,4 +100,11 @@ Message.newMsg = (seq, content) => {
 	return msg.toChunk()
 }
 
+Message.pollMsg = (seq, content) => {
+	let msg = new Message()
+	msg.seq = seq
+	msg.cmd = Message.Type.PollMsg
+	msg.content = JSON.stringify(content)
+	return msg.toChunk()
+}
 module.exports = Message
